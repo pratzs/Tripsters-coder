@@ -1,0 +1,4 @@
+<!-- DEBUG {{ checkout.shipping_method.title }} has been used -->
+{% if checkout.shipping_method.title == 'Domestic Ground Shipping' %}
+<p>Delivery Estimates do not include the time it takes to produce an apparel item</p>
+{% endif %} 
