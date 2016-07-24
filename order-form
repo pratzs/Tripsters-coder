@@ -1,0 +1,85 @@
+{% assign collection = collections.all %}
+
+{% paginate collection.products by 100 %}
+
+<form action="/cart" method="post">
+  
+  {% if collection.products_count > 0 %}
+    <div>
+      <h1>{% if template contains 'page' %}{{ page.title }}{% else %}{{ collection.title }}{% endif %}</h1>
+      <input type="submit" value="Add to the cart" />
+    </div>
+  {% else %}
+    <h1>{% if template contains 'page' %}{{ page.title }}{% else %}{{ collection.title }}{% endif %}</h1>
+  {% endif %}
+
+  {% if template contains 'page' and page.content.size > 0 %}
+    <div class="rte">
+      {{ page.content }}
+    </div>  
+  {% elsif collection.description.size > 0 %}
+    <div class="rte">
+      {{ collection.description }}
+    </div>
+  {% endif %}
+
+  {% if collection.products_count > 0 %}
+
+    <table>
+      <tbody>
+      {% for product in collection.products %}
+        {% if product.available %}
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <tr class="{% cycle 'pure-table-odd', '' %}">
+                <td>
+                  <a href="{{ variant.url | collection }}">
+                    <img src="{{ variant.image | default: product.featured_image | img_url: 'small' }}" alt="{{ variant.title | escape }}" />
+                  </a>
+                </td>
+                <td>
+                  <a href="{{ variant.url | collection }}">
+                   {{ product.title }}{% unless variant.title contains 'Default' %} - {{ variant.title }}{% endunless %}{% unless variant.sku == blank %} - {{ variant.sku }}{% endunless %}
+                  </a>
+                </td>
+                <td>
+                   {{ variant.price | money }}
+                </td>
+                <td style="text-align:right;">
+                  <input name="updates[{{ variant.id }}]" onfocus="this.select()" class="quantity field" min="0" {% unless variant.inventory_management == blank or variant.inventory_policy == 'continue' %} max="{{ variant.inventory_quantity }}" {% endunless %} type="text" value="0" tabindex="1" />
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+    
+    <div>
+      <input type="submit" value="Add to the cart" />
+    </div>
+  
+  {% else %}
+    <p>There are no products in this view.</p>
+  {% endif %}
+
+</form>
+
+{% endpaginate %}
+
+{% if collection.products_count > 0 %}
+<script>
+jQuery(function($) {
+  $('table .quantity:first').focus();
+  $('[max]').change(function() {
+    var max = parseInt($(this).attr('max'), 10);
+    var value = parseInt($(this).val(), 10) || 0;
+    if (value > max) { 
+      alert('We only have ' + max + ' of this item in stock');
+      $(this).val(max); 
+    }    
+  });
+});
+</script>
+{% endif %}
