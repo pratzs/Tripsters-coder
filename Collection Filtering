@@ -3,21 +3,6 @@
 Replace the given code below in your collection.liquid
 {% endcomment %}
 
-<li class="clearfix filter">
-  <label>Shop by category</label>
-  <select class="coll-picker">
-    <option value="all">All</option>
-    {% for c in collections %}
-    {% unless c.handle == 'all' %}
-    {% if collection.handle == c.handle %}
-    <option value="{{ c.handle }}" selected>{{ c.title }}</option>
-    {% else %}
-    <option value="{{ c.handle }}">{{ c.title }}</option>
-    {% endif %}
-    {% endunless %}
-    {% endfor %}
-  </select>
-</li>
 <ul class="clearfix filters">
   <li class="clearfix filter">
     {% assign tags = 'Blue, Grey, Black' | split: ',' %}
