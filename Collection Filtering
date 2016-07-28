@@ -1,7 +1,4 @@
-{% comment %} our goal is to break down the collection's tags by category, to present a series of “search” filters on your collection page,
-like “shop by color”, “shop by vendor”, “shop by price” etc.
-Whenever you need a “shop by” drop-down on a collection page, you need to handle things with product tags.
-Instead of lumping together all product tags in the collection, you will break them down into categories.
+{% comment %} Our basic motive is to breakdown our products in different filters in form of tags.Let your customers search products with "shop by category,shop by size and many more
 
 Replace the given code below in your collection.liquid
 {% endcomment %}
@@ -74,10 +71,6 @@ Javascript. Replace in collection liquid. if its not present than paste this cod
 {% endcomment %}
 
 <script>
-  /* Product Tag Filters - Good for any number of filters on any type of collection page.
-     Give you product tag filter select element a class of coll-filter.
-     Give your collection select a class of coll-picker.
-     Brought to you by Caroline Schnapp. */
   Shopify.queryParams = {};
   if (location.search.length) {
     for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
@@ -127,7 +120,6 @@ Javascript. Replace in collection liquid. if its not present than paste this cod
 </script>
 
 <style>
-/* some default styles */
 .filters { list-style-type: none; }
 .filter { float: left; margin-right: 15px; }
 .filter label { display: block; margin: 10px 0; }
