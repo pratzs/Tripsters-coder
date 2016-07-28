@@ -1,0 +1,135 @@
+{% comment %} our goal is to break down the collection's tags by category, to present a series of “search” filters on your collection page,
+like “shop by color”, “shop by vendor”, “shop by price” etc.
+Whenever you need a “shop by” drop-down on a collection page, you need to handle things with product tags.
+Instead of lumping together all product tags in the collection, you will break them down into categories.
+
+Replace the given code below in your collection.liquid
+{% endcomment %}
+
+<li class="clearfix filter">
+  <label>Shop by category</label>
+  <select class="coll-picker">
+    <option value="all">All</option>
+    {% for c in collections %}
+    {% unless c.handle == 'all' %}
+    {% if collection.handle == c.handle %}
+    <option value="{{ c.handle }}" selected>{{ c.title }}</option>
+    {% else %}
+    <option value="{{ c.handle }}">{{ c.title }}</option>
+    {% endif %}
+    {% endunless %}
+    {% endfor %}
+  </select>
+</li>
+<ul class="clearfix filters">
+  <li class="clearfix filter">
+    {% assign tags = 'Blue, Grey, Black' | split: ',' %}
+    <label>Shop by color</label>
+    <select class="coll-filter">
+      <option value="">All</option>
+      {% for t in tags %}
+      {% assign tag = t | strip %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+  <li class="clearfix filter">
+    {% assign tags = 'Small, Medium, Large' | split: ',' %}
+    <label>Shop by size</label>
+    <select class="coll-filter">
+      <option value="">All</option>
+      {% for t in tags %}
+      {% assign tag = t | strip %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+ <li class="clearfix filter">
+    {% assign tags = 'Egyptian Cotton, Silk, Satin' | split: ',' %}
+    <label>Shop by material</label>
+    <select class="coll-filter">
+      <option value="">All</option>
+      {% for t in tags %}
+      {% assign tag = t | strip %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% elsif collection.all_tags contains tag %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+    </select>
+  </li>
+</ul>
+-----------------------------------------------------------------------------------------------------------------
+{% comment
+Javascript. Replace in collection liquid. if its not present than paste this code at the bottom of collection.liquid
+{% endcomment %}
+
+<script>
+  /* Product Tag Filters - Good for any number of filters on any type of collection page.
+     Give you product tag filter select element a class of coll-filter.
+     Give your collection select a class of coll-picker.
+     Brought to you by Caroline Schnapp. */
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+  jQuery('.coll-picker').change(function() {
+    if (jQuery(this).val()) {
+      location.href = '/collections/' + jQuery(this).val();
+    }
+    else {
+      location.href = '/collections/all';
+    }
+  });
+  var collFilters = jQuery('.coll-filter');
+  collFilters.change(function() {
+    delete Shopify.queryParams.page;
+    var newTags = [];
+    collFilters.each(function() {
+      if (jQuery(this).val()) {
+        newTags.push(jQuery(this).val());
+      }
+    });
+    {% if collection.handle %}
+    var newURL = '/collections/{{ collection.handle }}';
+    if (newTags.length) {
+      newURL += '/' + newTags.join('+');
+    }
+    var search = jQuery.param(Shopify.queryParams);
+    if (search.length) {
+      newURL += '?' + search;
+    }
+    location.href = newURL;
+    {% else %}
+    if (newTags.length) {
+      Shopify.queryParams.constraint = newTags.join('+');
+    }
+    else {
+      delete Shopify.queryParams.constraint;
+    }
+    location.search = jQuery.param(Shopify.queryParams);
+    {% endif %}
+  });
+</script>
+
+<style>
+/* some default styles */
+.filters { list-style-type: none; }
+.filter { float: left; margin-right: 15px; }
+.filter label { display: block; margin: 10px 0; }
+.filter select { max-width: 200px; }
+</style>
