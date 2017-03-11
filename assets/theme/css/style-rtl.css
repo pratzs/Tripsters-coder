@@ -1,0 +1,25 @@
+body.rtl section h1, body.rtl section h2, body.rtl section h3, body.rtl section h4, body.rtl section h5, body.rtl section h6,
+body.rtl section p, body.rtl section a.btn, body.rtl section .mbr-gallery-title, body.rtl section .mbr-price-value,
+body.rtl section .mbr-figure-caption, body.rtl section small, body.rtl section blockquote,
+body.rtl section .mbr-author-name, body.rtl section .mbr-plan-label, body.rtl section .mbr-price-figure,
+body.rtl section li, body.rtl section label.form-control-label, body.rtl section label.startPreset,
+body.rtl section .form-control, body.rtl section span.innerPhone, body.rtl section span.innerEmail,
+body.rtl section a.navbar-caption, body.rtl section th, body.rtl section td, body.rtl section strong {
+  direction: rtl !important; }
+body.rtl section th, body.rtl section .dataTables_info {
+  text-align: right; }
+body.rtl section label.form-control-label {
+  display: block; }
+body.rtl section.extHeader15 input[type='email'], body.rtl section.extHeader16 input[type='email'] {
+  padding-right: 15px;
+  padding-left: 0; }
+  body.rtl section.extHeader15 input[type='email']:focus, body.rtl section.extHeader16 input[type='email']:focus {
+    padding-right: 15px;
+    padding-left: 0; }
+body.rtl section.extHeader15 .form_wraper:hover input[type="email"], body.rtl section.extHeader16 .form_wraper:hover input[type="email"] {
+  padding-right: 15px;
+  padding-left: 0; }
+body.rtl footer {
+  direction: rtl !important; }
+
+/*# sourceMappingURL=style-rtl.css.map */
