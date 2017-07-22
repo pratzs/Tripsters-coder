@@ -1,0 +1,49 @@
+{% form 'contact' %}
+
+  {% if form.posted_successfully? %}
+    <div class="successForm feedback">
+      {{ 'contact.form.post_success' | t }}
+    </div>
+  {% endif %}
+
+  {% if form.errors %}
+  <div class="errorForm feedback">
+    <!-- {{ form.errors.size }} or {{ form.errors | size }} -->
+    <p>Your contact form has {{ form.errors | size | pluralize: "an error", "a few errors" }}. To submit your form, make the following changes and try again:</p>
+    {% for field in form.errors %}
+      <p>The {{ field | capitalize | replace: 'Body', 'Message' }} field {{ form.errors.messages[field] }}.</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div id="contactFormWrapper">
+    <p>
+      <label>{{ 'contact.form.name' | t }}</label>
+      <input type="text" required id="contactFormName" name="contact[name]">
+    </p>
+    <p>
+      <label>{{ 'contact.form.email' | t }}</label>
+      <input type="email" required id="contactFormEmail" name="contact[email]">
+    </p>
+    <p>
+      <label>{{ 'contact.form.phone' | t }}</label>
+      <input type="telephone" id="contactFormTelephone" name="contact[phone]">
+    </p>
+    <p>
+      <label>{{ 'contact.form.message' | t }}</label>
+      <textarea required rows="10" id="contactFormMessage" name="contact[body]"></textarea>
+    </p>
+    <p>
+      <input type="submit" id="contactFormSubmit" value="{{ 'contact.form.send' | t }}" />
+    </p>
+  </div>
+
+  {% endform %}
+
+  <style>
+  .contact-form {margin:1em 0}
+  .feedback {padding:0.5em 0.7em;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px}
+  .feedback p {padding:0.5em 0 !important;margin:0 !important}
+  .successForm {background:#bde0a8;color:green}
+  .errorForm {background:#eebdbd;color:red}
+  </style>
